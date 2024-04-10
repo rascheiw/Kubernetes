@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: raph-kub-exam-deployment
+  labels:
+    app: raph-kub-exam-api
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: raph-kub-exam-api
+  template:
+    metadata:
+      labels:
+        app: raph-kub-exam-api
+    spec:
+      containers:
+      - name: kub-exam-api
+        image: rascheiw/fastapi_image
+        ports:
+        - containerPort: 8000
+        env:
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: raph-kub-exam-secret 
+              key: password
+      - name: kub-exam-sql-database
+        image: datascientest/mysql-k8s:1.0.0
+        ports:
+        - containerPort: 3301
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: raph-kub-exam-secret 
+              key: password

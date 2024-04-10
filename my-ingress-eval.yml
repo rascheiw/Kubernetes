@@ -1,0 +1,10 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: raph-kub-exam-ingress
+spec:
+  defaultBackend:
+    service:
+      name: raph-kub-exam-service
+      port:
+        number: 8001
